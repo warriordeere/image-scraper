@@ -72,12 +72,12 @@ async function organizeImages() {
         });
     }
 
-    let imageCounter = 1;
 
     for (const coin of coinList) {
+        let imageCounter = 1;
         const seriesIndex = seriesMap[coin.theme];
         const newName = `${String(imageCounter).padStart(3, "0")}.jpg`;
-        const newPath = path.join(outputBase, countryCode, coin.value, coin.year, seriesIndex.toString());
+        const newPath = path.join(outputBase, `${countryCode}_${coin.value}_${coin.year}_${seriesIndex.toString()}`);
 
         if (!fs.existsSync(newPath)) {
             fs.mkdirSync(newPath, { recursive: true });

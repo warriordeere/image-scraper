@@ -4,8 +4,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { URL } from "url";
 
-const baseUrl = "https://www.muenzen-engel.de";
-const outputDir = "./output";
+const baseUrl = ""; //set the base URL of the website you want to scrape
+const cssSelector = ".example > div:nth-child(1) > picture:nth-child(1) > img:nth-child(2)"; // Adjust the CSS selector to target the image you want to download
+const outputDir = "./output"; // Directory to save downloaded images
 
 async function downloadImage(imageUrl: string, filename: string) {
     try {
@@ -28,7 +29,7 @@ async function scrapeImage(url: string) {
         const { data: html } = await axios.get(url);
         const $ = cheerio.load(html);
 
-        const imgRelative = $(".js-gallery-images > div:nth-child(1) > picture:nth-child(1) > img:nth-child(2)").attr("src");
+        const imgRelative = $(cssSelector).attr("src");
 
         if (!imgRelative) {
             console.error("No image found with ID 'zoom1'");
@@ -53,6 +54,6 @@ async function scrapeImage(url: string) {
 const scrapeList: Array<string> = JSON.parse(fs.readFileSync("scrape.json", "utf-8"));
 
 scrapeList.forEach((scrapeItem) => {
-    const productUrl = `https://www.muenzen-engel.de/Deutschland-2-Euro-${scrapeItem}-A`;
+    const productUrl = `https://www.example.com/foo/random-bar-${scrapeItem}-ABC-123`; // Adjust the URL pattern as needed
     scrapeImage(productUrl);
 });
