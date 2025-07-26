@@ -3,26 +3,11 @@ import * as cheerio from "cheerio";
 import * as fs from "fs";
 import * as path from "path";
 import { URL } from "url";
+import { downloadImage } from "./utils";
 
 const baseUrl = ""; //set the base URL of the website you want to scrape
 const cssSelector = ".example > div:nth-child(1) > picture:nth-child(1) > img:nth-child(2)"; // Adjust the CSS selector to target the image you want to download
 const outputDir = "./output"; // Directory to save downloaded images
-
-async function downloadImage(imageUrl: string, filename: string) {
-    try {
-        const response = await axios.get(imageUrl, { responseType: "stream" });
-        const filePath = path.join(outputDir, filename);
-        const writer = fs.createWriteStream(filePath);
-        response.data.pipe(writer);
-
-        return new Promise<void>((resolve, reject) => {
-            writer.on("finish", () => resolve());
-            writer.on("error", reject);
-        });
-    } catch (error) {
-        console.error(`Failed to download image: ${imageUrl}`, error);
-    }
-}
 
 async function scrapeImage(url: string) {
     try {
